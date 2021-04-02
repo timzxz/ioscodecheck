@@ -987,35 +987,35 @@ function upload_artifacts() {
 }
 
 #还需要配置全局变量 CLOUD_BUILD_ID_RSA_KEY GIT_ACCOUNT_NAME GIT_ACCOUNT_EMAIL
-export WORKSPACE=$(cd "$(dirname "$0")";pwd)
-# export WORKSPACE="/Users/bytedance/Desktop/testbuild/"
+# export WORKSPACE=$(cd "$(dirname "$0")";pwd)
+export WORKSPACE="/Users/bytedance/Desktop/testbuild/"
 # TARGETCODEPATH="/Users/bytedance/Desktop/testbuild/TobBundle"
 #step 1 需要参数 MAIN_GIT_URL和MAIN_GIT_BRANCH
-# MAIN_GIT_URL="git@github.com:zlrs/Account.git"
-# MAIN_GIT_BRANCH="main"
-MAIN_GIT_URL=${MAIN_GIT_URL}
-clone_code
+MAIN_GIT_URL="git@github.com:zlrs/Account.git"
+MAIN_GIT_BRANCH="main"
+# MAIN_GIT_URL=${MAIN_GIT_URL}
+clone_main_code
 #setp 2
 bundler_env
 #setp 3 需要参数 cert_url，暂时用本地路径来测试
-# cert_url="http://tosv.byted.org/obj/mars-plugin/zhuyuanqing_ios_cert.p12"
-# cert_passwd="bytedance2021"
-# login_passwd="******"
-cert_url=${CERT_URL}
-cert_passwd=${CERT_PASSWD}
+cert_url="http://tosv.byted.org/obj/mars-plugin/zhuyuanqing_ios_cert.p12"
+cert_passwd="bytedance2021"
+login_passwd="******"
+# cert_url=${CERT_URL}
+# cert_passwd=${CERT_PASSWD}
 cert_install
 #step 4 需要参数 PROV_PATH
-# prov_url="http://tosv.byted.org/obj/mars-plugin/Account_APP_AdHoc_Provisioning_Profile.mobileprovision"
-prov_url=${PROV_URL}
+prov_url="http://tosv.byted.org/obj/mars-plugin/Account_APP_AdHoc_Provisioning_Profile.mobileprovision"
+# prov_url=${PROV_URL}
 provision_install
 #step 5 
 pod_update
 # step 6 需要参数 cwd workspace_name scheme configuration
-cwd="${TARGETCODEPATH}${CWD}"
-# scheme="Account"
-# configuration="Release"
-scheme=${SCHEME}
-configuration=${CONFIGURATION}
+cwd="${TARGETCODEPATH}/Account"
+scheme="Account"
+configuration="Release"
+# scheme=${SCHEME}
+# configuration=${CONFIGURATION}
 xcodebuild
 #step 7 需要参数 export_option_plist_path
 if [ ! -d "${TARGETCODEPATH}/Project/ExportPlists/" ]; then
@@ -1028,4 +1028,7 @@ collect_data
 #step 9
 analyze_build_log
 # step 10
+UPLOAD_FILE_HOST="http://mars-oss.bytedance.net"
+UPLOAD_ARTIFACT_HOST="http://mars-devops-build.bytedance.net"
+RECORD_ID="1"
 upload_artifacts
